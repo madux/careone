@@ -38,7 +38,8 @@
                         </group>
                     </group>
                     <group>
-                        <field name="branch_ids" widget="many2many_tags"/>
+                        <field name="branch_ids" widget="many2many_tags" string="Allowed Branch"/>
+                        <field name="branch_id"/>
                     </group>
                     <group>
                         <field name="description"/>

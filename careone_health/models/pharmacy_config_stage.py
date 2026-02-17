@@ -24,7 +24,7 @@ class PharmacyConfigStage(models.Model):
     @api.constrains('branch_id')
     def check_branch_constraint(self):
         exist_branch = self.env['pharmacy.config.stage'].search([
-            ('branch_id', '=', self.branch_id.id)], limit=2)
+            ('branch_id', '=', self.branch_id.id), ('name', '=', self.name)], limit=2)
         if len(exist_branch) > 1:
             raise ValidationError("Sorry !!! you cannot create record with duplicate branch")
       

@@ -45,9 +45,9 @@
                     </div>
                     <group>
                         <group>
-                            <field name="patient_id" options="{'no_create': True}"/>
+                            <field name="patient_id" options="{'no_create': True}" domain="[('is_patient', '=', True)]"/>
                             <field name="branch_id" options="{'no_create': True}"/>
-                            <field name="date"/>
+                            <field name="date"/> 
                             <field name="state"/>
                             <field name="stage_id" options="{'no_create': True}"/>
                             <field name="priority" widget="priority"/>
@@ -59,6 +59,8 @@
                             <field name="verified_date" readonly="1"/>
                             <field name="dispensed_by" readonly="1"/>
                             <field name="dispensed_date" readonly="1"/>
+                            <field name="prescription_document" readonly="0"/>
+                            
                         </group>
                     </group>
                     <group>
@@ -221,7 +223,7 @@
     </record>
 
     <menuitem id="menu_pharmacy_root"
-              name="Pharmacy"
+              name="EMR"
               sequence="50"/>
 
     <menuitem id="menu_pharmacy_prescriptions"

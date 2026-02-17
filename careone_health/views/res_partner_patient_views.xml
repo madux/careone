@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_pharmacy" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.pharmacy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                 <field name="patient_no"/>
+                 <field name="is_patient"/>
+            </xpath>
+
+            <xpath expr="//field[@name='function']" position="attributes">
+                 <attribute name="invisible">is_patient == True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='contact_addresses']" position="before">
+                <page string="Patient Information" invisible="is_patient == False">
+                    <group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="date_of_registration"/>
+                            <field name="patient_no"/>
+                            <field name="street"/>
+                            <field name="city"/>
+                            <!-- <field name="state_id"/> -->
+                            
+                        </group>
+                        <group>
+                            <field name="gender"/>
+                            <field name="dob"/>
+                            <field name="age"/>
+                            <field name="last_visit_date"/>
+                            <field name="prescription_count"/> 
+                            <field name="is_patient"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="pharmacyhistory" string="Pharmacy History">
+                            <field name="pharmacy_history_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="branch_id"/>
+                                    <field name="stage_id"/>
+                                    <field name="state"/>
+                                    <field name="total_amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="allergies" string="Allergies">
+                            <field name="allergy_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="severity"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="Evaluation" string="Evaluation">
+                            <field name="patient_evaluation_ids">
+                             <!-- context="{'form_view_ref': }"> -->
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="severity"/>
+                                    <field name="patient_id"/>
+                                    <field name="severity"/>
+                                    <field name="prescription_document"/>
+                                    <!-- <field name="pharmacy_prescription_line_ids" widget="many2many_tags"/> -->
+                                    
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="Medical_History" string="Medical History">
+                            <field name="patient_history_ids">
+                             <!-- context="{'form_view_ref': }"> -->
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="severity"/>
+                                    <field name="patient_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="chroniccondition" string="Chronic COndition">
+                            <field name="chronic_condition_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
