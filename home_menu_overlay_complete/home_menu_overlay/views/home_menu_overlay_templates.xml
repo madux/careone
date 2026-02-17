@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Add assets to backend -->
+        <template id="assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css" href="/home_menu_overlay/static/src/css/home_menu_overlay.css"/>
+                <script type="text/javascript" src="/home_menu_overlay/static/src/js/home_menu_overlay_jquery.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
