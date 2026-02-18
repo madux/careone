@@ -86,7 +86,7 @@
                                             </group>
                                         </group>
                                     </form>
-                                    <tree editable="bottom">
+                                    <tree editable="bottom" create="1">
                                         <field name="time"/>
                                         <field name="temp" options='{"fg_color": "red: (temp&lt;36.2 or temp&gt;37.9)"}'/>
                                         <field name="systolic" options='{"fg_color": "red: (systolic&lt;90 or systolic&gt;120)"}'/>

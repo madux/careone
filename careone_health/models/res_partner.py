@@ -11,26 +11,45 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
     
     pharmacy_history_ids = fields.One2many('res.patient.pharmacy.history', 'patient_id', string='Pharmacy History')
-    patient_no = fields.Char(string='Patient No')
+    patient_no = fields.Char(string='Patient No', readonly=True)
     gender = fields.Selection([('Male', 'Male'),('Female', 'Female'),('Other', 'Other')], string='Gender')
     date_of_registration = fields.Char(string='Registration Date')
     first_name = fields.Char(string='First Name')
     middle_name = fields.Char(string='Middle Name')
     last_name = fields.Char(string='Last Name')
-    date_of_registration = fields.Date(string='Registration Date')
+    date_of_registration = fields.Datetime(string='Registration Date',default= fields.Datetime.now)
     dob = fields.Date(string='Date of Birth')
     age = fields.Char(string='Age', compute="compute_dob", store=False)
+    name = fields.Char(
+          compute='_compute_full_name', store=True,readonly=False)
 
     
     related_employee_number = fields.Char(string='Employee No', compute="get_employee_number", store=False)
     is_patient = fields.Boolean(string='Is Patient')
 
     prescription_count = fields.Integer(compute='_compute_prescription_count')
-    last_visit_date = fields.Datetime(compute='_compute_last_visit_date', store=True)
+    # last_visit_date = fields.Datetime(compute='_compute_last_visit_date', store=True)
+    last_visit_date = fields.Datetime(string='Last Visit Date', default=fields.Datetime.now)
     allergy_ids = fields.Many2many('pharmacy.allergy', string='Allergies')
     chronic_condition_ids = fields.Many2many('pharmacy.chronic.condition', string='Chronic Conditions')
     patient_history_ids = fields.One2many('patient.medical.history', 'patient_id', string='Medical History')
     patient_evaluation_ids = fields.One2many('patient.medical.evaluation', 'patient_id', string='Medical Evaluation')
+
+    def get_default_name(self, vals):
+        return self.env["ir.sequence"].next_by_code("patient.code") or "/"
+
+    @api.model
+    def create(self, vals):
+        # if vals.get("patient_no", "/") == "/":
+        vals["patient_no"] = self.get_default_name(vals)
+        return super().create(vals)
+    
+
+    @api.depends('last_name', 'first_name', 'middle_name')
+    def _compute_full_name(self):
+        for rec in self:
+            parts = [rec.last_name or '', rec.first_name or '', rec.middle_name or '']
+            rec.name = ' '.join([p for p in parts if p])
     
     @api.depends('name')
     def get_employee_number(self):

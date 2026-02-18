@@ -77,7 +77,7 @@ class PatientMedicalEvaluation(models.Model):
         ('inbound', 'Inbound'),
         ('outbound', 'Outbound'),
     ], string='Evaluation type')
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Chief Complaint')
     patient_id = fields.Many2one("res.partner", string="Patient ID")
     branch_id = fields.Many2one("multi.branch", string="Clinic Branch")
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
@@ -91,7 +91,16 @@ class PatientMedicalEvaluation(models.Model):
     hpi = fields.Text(string='HPI', help='History of present Illness')
     state = fields.Selection([('Draft','Draft'), ('Published', 'Published')], default='Draft')
     
+    def get_default_name(self, vals):
+        return self.env["ir.sequence"].next_by_code("evaluation.code") or "/"
+
+    @api.model
+    def create(self, vals):
+        # if vals.get("evaluation_no", "/") == "/":
+        vals["name"] = self.get_default_name(vals)
+        return super().create(vals)
     
+
     def set_to_progress(self):
         return self.write({'state': 'Completed'})
 
