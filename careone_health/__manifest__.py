@@ -5,7 +5,7 @@
     'name': "CareOne Health Application",
     'version': '2.0',
     'category': '',
-    'sequence': 1,
+    "sequence":1,
     'summary': 'Application developed for careone integration with EMR',
     'depends': ['base', 'mail', 'product', 'account','account_payment', 'stock', 
                 'purchase', 'sale', 'sale_management', 'ik_multi_branch',

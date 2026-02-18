@@ -13,4 +13,4 @@ class VitalSigns(models.Model):
     heart_rate = fields.Integer(string="Heart Rate")
     respiratory = fields.Integer(string="Respiratory")
     oxy_saturate = fields.Integer(string="Oxygen Saturation")
-    evaluation_id = fields.Many2one('oeh.medical.evaluation', string="Evaluation", ondelete='cascade')
+    evaluation_id = fields.Many2one('patient.medical.evaluation', string="Evaluation", ondelete='cascade')

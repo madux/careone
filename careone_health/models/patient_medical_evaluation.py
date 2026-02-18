@@ -68,6 +68,7 @@ class PatientMedicalEvaluation(models.Model):
             ('Invoiced', 'Invoiced'),
         ]
     name = fields.Char(string='Evaluation No.', readonly=True)
+
     severity = fields.Selection([
         ('mild', 'Mild'),
         ('moderate', 'Moderate'),
@@ -90,17 +91,17 @@ class PatientMedicalEvaluation(models.Model):
     notes_complaint = fields.Text(string='Complaint details')
     hpi = fields.Text(string='HPI', help='History of present Illness')
     state = fields.Selection([('Draft','Draft'), ('Published', 'Published')], default='Draft')
-    
-    def get_default_name(self, vals):
+    evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
+
+    def get_default_name(self):
         return self.env["ir.sequence"].next_by_code("evaluation.code") or "/"
 
     @api.model
     def create(self, vals):
-        # if vals.get("evaluation_no", "/") == "/":
-        vals["name"] = self.get_default_name(vals)
+        # if not vals.get("evaluation_no"):  # Only generate if not provided
+        vals["evaluation_no"] = self.get_default_name()
         return super().create(vals)
     
-
     def set_to_progress(self):
         return self.write({'state': 'Completed'})
 

@@ -34,6 +34,7 @@ class ResPartner(models.Model):
     chronic_condition_ids = fields.Many2many('pharmacy.chronic.condition', string='Chronic Conditions')
     patient_history_ids = fields.One2many('patient.medical.history', 'patient_id', string='Medical History')
     patient_evaluation_ids = fields.One2many('patient.medical.evaluation', 'patient_id', string='Medical Evaluation')
+    evaluation_count=fields.Integer()
 
     def get_default_name(self, vals):
         return self.env["ir.sequence"].next_by_code("patient.code") or "/"
@@ -86,3 +87,19 @@ class ResPartner(models.Model):
                 rec.last_visit_date = max(rec.pharmacy_history_ids.mapped('date'))
             else:
                 rec.last_visit_date = False
+
+    def action_view_evaluation(self):
+        views = self.env.ref("careone_health.view_patient_medical_evaluation_form").id
+        return { 
+            "name": "Patient's Evaluation",
+            "type": "ir.actions.act_window",
+            "res_model": "patient.medical.evaluation",
+            "view_type": "form",
+            "view_form": "form",
+            "views": [(views, 'form')],
+            "target": "new",
+            "context": {
+                "default_patient_id": self.id,
+                "default_purpose": "doctor_evaluation",
+            }
+        }
