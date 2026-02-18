@@ -39,4 +39,5 @@
               parent="careone_health.menu_clinic_management_patient"
               action="action_patient_medical_evaluation_action"
               sequence="10"/>
+              
 </odoo>

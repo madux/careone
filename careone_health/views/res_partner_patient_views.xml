@@ -82,7 +82,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page name="chroniccondition" string="Chronic COndition">
+                        <page name="chroniccondition" string="Chronic Condition">
                             <field name="chronic_condition_ids">
                                 <tree>
                                     <field name="name"/>

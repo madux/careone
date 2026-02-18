@@ -15,6 +15,8 @@
         # 'data/account_view.xml',
         'views/res_patient_pharmacy_history_views.xml',
         'views/res_partner_patient_views.xml',
+        'views/patient_evaluation_form_view.xml',
+        'views/patient_admission_view.xml',
         'views/patient_view.xml',
         'views/patient_evaluation.xml',
         'views/pharmacy_config_stage_views.xml',
