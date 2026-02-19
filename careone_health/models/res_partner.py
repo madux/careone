@@ -11,7 +11,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
     
     pharmacy_history_ids = fields.One2many('res.patient.pharmacy.history', 'patient_id', string='Pharmacy History')
-    patient_no = fields.Char(string='Patient No', readonly=True,required= True)
+    patient_no = fields.Char(string='Patient No', readonly=True,)
     gender = fields.Selection([('Male', 'Male'),('Female', 'Female'),('Other', 'Other')], string='Gender')
     # date_of_registration = fields.Char(string='Registration Date')
     first_name = fields.Char(string='First Name', required= True)

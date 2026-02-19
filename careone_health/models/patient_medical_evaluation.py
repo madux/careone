@@ -80,7 +80,7 @@ class PatientMedicalEvaluation(models.Model):
     ], string='Evaluation type')
     description = fields.Text(string='Chief Complaint')
     patient_id = fields.Many2one("res.partner", string="Patient ID")
-    branch_id = fields.Many2one("multi.branch", string="Clinic Branch")
+    branch_id = fields.Many2one("multi.branch", string="Clinic Branch", default = lambda self: self.env.user.branch_id.id)
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
     pharmacy_prescription_line_ids = fields.One2many('res.patient.pharmacy.history', 'patient_evaluation_id', string='Prescriptions')
     age = fields.Char(related="patient_id.age")
@@ -93,15 +93,22 @@ class PatientMedicalEvaluation(models.Model):
     state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
     evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
 
-    def get_default_name(self):
-        return self.env["ir.sequence"].next_by_code("evaluation.code") or "/"
+    # def get_default_name(self):
+    #     return self.env["ir.sequence"].next_by_code("patient.medical.evaluation") or "/"
 
+    # @api.model
+    # def create(self, vals):
+    #     # if not vals.get("evaluation_no"):  # Only generate if not provided
+    #     vals["evaluation_no"] = self.get_default_name()
+    #     return super().create(vals)
+    
     @api.model
     def create(self, vals):
-        # if not vals.get("evaluation_no"):  # Only generate if not provided
-        vals["evaluation_no"] = self.get_default_name()
-        return super().create(vals)
-    
+     if vals.get('evaluation_no', 'New') == 'New':
+        vals['evaluation_no'] = self.env['ir.sequence'].next_by_code(
+            'patient.medical.evaluation') or 'New'
+     return super(PatientMedicalEvaluation, self).create(vals)
+
     def set_to_progress(self):
         return self.write({'state': 'Published'})
     def set_to_draft(self):
