@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<odoo>
     <data noupdate="1">
         <record id="seq_res_patient_pharmacy_history" model="ir.sequence">
             <field name="name">Pharmacy Prescription Sequence</field>
@@ -8,5 +9,21 @@
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
         </record>
+
+        <record id="seq_patient_code" model="ir.sequence">
+            <field name="name">Patient sequence</field>
+            <field name="code">patient.code</field>
+            <field name="prefix">EHP</field>
+            <field name="padding">6</field>
+        </record>
+
+         <record id="seq_evaluation_no" model="ir.sequence">
+            <field name="name">Evaluation sequence</field>
+            <field name="code">evaluation.code</field>
+            <field name="prefix">EVL</field>
+            <field name="padding">6</field>
+        </record>
     </data>
+</odoo>
+
 </odoo>

@@ -5,18 +5,40 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <!-- <xpath expr="//field[@name='name']" position="after">
                  <field name="patient_no"/>
                  <field name="is_patient"/>
-            </xpath>
+            </xpath> -->
+
+
+             
+
+             <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_evaluation" groups="sales_team.group_sale_salesman" icon="fa-heartbeat">
+                    <field string="Evaluation" name="evaluation_count" widget="statinfo"/>
+                </button>
+            </div> 
+
+            <xpath expr="//field[@name='name']" position="attributes">
+            <attribute name="placeholder">e.g. John Michael Doe</attribute>
+            <attribute name="readonly">1</attribute>
+        </xpath>
+             <xpath expr="//field[@name='title']" position="after">
+            <field name="is_patient"/>
+        </xpath>
+      
 
             <xpath expr="//field[@name='function']" position="attributes">
                  <attribute name="invisible">is_patient == True</attribute>
             </xpath>
             <xpath expr="//page[@name='contact_addresses']" position="before">
+            
                 <page string="Patient Information" invisible="is_patient == False">
                     <group>
                         <group>
+                            <field name="last_name"/>
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
                             <field name="phone"/>
                             <field name="date_of_registration"/>
                             <field name="patient_no"/>
@@ -31,7 +53,7 @@
                             <field name="age"/>
                             <field name="last_visit_date"/>
                             <field name="prescription_count"/> 
-                            <field name="is_patient"/>
+                            <!-- <field name="is_patient"/> -->
                         </group>
                     </group>
                     <notebook>
@@ -61,7 +83,8 @@
                              <!-- context="{'form_view_ref': }"> -->
                                 <tree>
                                     <field name="name"/>
-                                    <field name="description"/>
+                                    <field name="chief_complaint" readonly="state in ['Completed']" placeholder="Chief complaint..."/>
+                                    <field name="state"/>
                                     <field name="severity"/>
                                     <field name="patient_id"/>
                                     <field name="severity"/>

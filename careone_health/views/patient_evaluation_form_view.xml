@@ -6,18 +6,25 @@
         <field name="arch" type="xml">
             <form string="Evaluation">
                 <header>
-                    <button name="set_to_progress" invisible="state not in ['In Progress']" string="Complete Evaluation"  confirm="Are you sure you want to complete this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
-                    <button name="set_to_completed" invisible="state not in ['In Progress']" string="Complete Evaluation"  confirm="Are you sure you want to complete this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
-                    <button name="action_admit" type="object" string="Admit Patient" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" invisible="admission_state in ['inpatient']"/>
+                    <button name="set_to_progress" invisible="state not in ['Draft']" string="Start Evaluation"  confirm="Are you sure you want to start this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="set_to_completed" invisible="state not in ['Published']" string="Complete Evaluation"  confirm="Are you sure you want to complete this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="set_to_draft" invisible="state not in ['Published']" string="Reverse Evaluation"  confirm="Are you sure you want to reverse this evaluation?" type="object" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="action_admit" type="object" string="Admit Patient" invisible="state in ['Completed']" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" />
+                    <!-- <button name="action_admit" type="object" string="Admit Patient" invisible="state in ['Completed']" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" invisible="admission_state in ['inpatient']"/> -->
                     <button string="Discharge Patient" name="action_discharge" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" invisible="admission_state in ['outpatient','draft']" />
                     <!-- <button name="print_visit_summary_report" string="Print Visit Summary" type="object"/> -->
-                    <field name="state" widget="statusbar" statusbar_visible="In Progress,Completed" statusbar_colors='{"Completed":"red","In Progress":"grey"}'/>
+                    <field name="state" widget="statusbar" statusbar_visible="In Progress,Completed" statusbar_colors='{"Completed":"red","In Progress":"grey",}'/>
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1>
-                            <label class="oe_edit_only" for="name" string="Evaluation #"/>
-                            <field name="name" class="oe_inline"/>
+                        
+                         <h1>
+                            <label class="oe_edit_only" for="evaluation_no" string="Evaluation #"/>
+                            <!-- <label class="oe_edit_only" for="name" string="Evaluation #"/> -->
+                            <!-- <field name="name" class="oe_inline"/> -->
+                            <field name="evaluation_no" class="oe_inline"/>
+                            <!-- <field name="evaluation_no" placeholder="Auto-generated" readonly="1"/> -->
+                            <!-- <field name="evaluation_no" class="oe_inline"/> -->
                         </h1>
                     </div>
                     <!-- <div class="evaluation_header"> -->
@@ -29,9 +36,10 @@
                             <!--This field is important for the admission workflow-->
                             <field name="purpose" invisible="1"/>
                             <!--This field is important for the admission workflow-->
-                            <field name="patient_id"/>
+                            <!-- <field name="patient_id"/> -->
+                            <field name="patient_id" required="1"/>
                             <!-- <field name="nurse" required="1" options="{'no_create': True}" readonly="state in ['Completed']"/> -->
-                            <field name="severity"/> 
+                            <field name="severity" required="1"/> 
                             <field name="care_provider" options="{'no_create': True}" invisible="patient_id == False" readonly="state == 'Completed'"/>
 
                             <!-- <field name="property_product_pricelist" /> -->
@@ -42,7 +50,7 @@
                             <!-- <field name="edit_option" string="Edit"/> -->
                             
                             <!-- <field name="template_name" invisible="1"/> -->
-                            <field name="evaluation_type" readonly="state in ['Completed']"/>
+                            <field name="evaluation_type" readonly="state in ['Completed']" required="1"/>
                             <field name="evaluation_start_date" readonly="state in ['Completed']"/>
                             <!-- <field name="appointment" domain="[('patient', '=', patient)]" options="{'no_create': True}"/> -->
                                   
@@ -56,7 +64,7 @@
                               
                         </group>
                         <group colspan="4">
-                            <field name="chief_complaint" readonly="state in ['Completed']" placeholder="Chief complaint..."/>
+                            <field name="chief_complaint" readonly="state in ['Completed']" placeholder="Chief complaint..." required="1"/>
                             <field name="hpi" placeholder="History of present illness..." readonly="state in ['Completed']"/>
                             <field string="Branch" name="branch_id" options="{'no_create': True, 'no_open': True}" />
 
@@ -86,7 +94,7 @@
                                             </group>
                                         </group>
                                     </form>
-                                    <tree editable="bottom">
+                                    <tree editable="bottom" create="1" delete="1">
                                         <field name="time"/>
                                         <field name="temp" options='{"fg_color": "red: (temp&lt;36.2 or temp&gt;37.9)"}'/>
                                         <field name="systolic" options='{"fg_color": "red: (systolic&lt;90 or systolic&gt;120)"}'/>

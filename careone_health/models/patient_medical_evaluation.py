@@ -68,6 +68,7 @@ class PatientMedicalEvaluation(models.Model):
             ('Invoiced', 'Invoiced'),
         ]
     name = fields.Char(string='Evaluation No.', readonly=True)
+
     severity = fields.Selection([
         ('mild', 'Mild'),
         ('moderate', 'Moderate'),
@@ -77,7 +78,7 @@ class PatientMedicalEvaluation(models.Model):
         ('inbound', 'Inbound'),
         ('outbound', 'Outbound'),
     ], string='Evaluation type')
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Chief Complaint')
     patient_id = fields.Many2one("res.partner", string="Patient ID")
     branch_id = fields.Many2one("multi.branch", string="Clinic Branch")
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
@@ -89,14 +90,28 @@ class PatientMedicalEvaluation(models.Model):
     chief_complaint = fields.Char(string='Chief Complaint', help='Chief Complaint')
     notes_complaint = fields.Text(string='Complaint details')
     hpi = fields.Text(string='HPI', help='History of present Illness')
-    state = fields.Selection([('Draft','Draft'), ('Published', 'Published')], default='Draft')
-    
+    state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
+    evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
+
+    def get_default_name(self):
+        return self.env["ir.sequence"].next_by_code("evaluation.code") or "/"
+
+    @api.model
+    def create(self, vals):
+        # if not vals.get("evaluation_no"):  # Only generate if not provided
+        vals["evaluation_no"] = self.get_default_name()
+        return super().create(vals)
     
     def set_to_progress(self):
-        return self.write({'state': 'Completed'})
+        return self.write({'state': 'Published'})
+    def set_to_draft(self):
+        return self.write({'state': 'Draft'})
 
     def set_to_completed(self):
         return self.write({'state': 'Completed'})
+    
+    def set_to_completed(self):
+        return self.write({'state': 'Draft'})
 
     ###### admission workflow ######
     def action_admit(self):
