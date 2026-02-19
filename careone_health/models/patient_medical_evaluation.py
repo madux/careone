@@ -90,7 +90,7 @@ class PatientMedicalEvaluation(models.Model):
     chief_complaint = fields.Char(string='Chief Complaint', help='Chief Complaint')
     notes_complaint = fields.Text(string='Complaint details')
     hpi = fields.Text(string='HPI', help='History of present Illness')
-    state = fields.Selection([('Draft','Draft'), ('Published', 'Published')], default='Draft')
+    state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
     evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
 
     def get_default_name(self):
@@ -103,10 +103,15 @@ class PatientMedicalEvaluation(models.Model):
         return super().create(vals)
     
     def set_to_progress(self):
-        return self.write({'state': 'Completed'})
+        return self.write({'state': 'Published'})
+    def set_to_draft(self):
+        return self.write({'state': 'Draft'})
 
     def set_to_completed(self):
         return self.write({'state': 'Completed'})
+    
+    def set_to_completed(self):
+        return self.write({'state': 'Draft'})
 
     ###### admission workflow ######
     def action_admit(self):

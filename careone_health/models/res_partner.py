@@ -11,13 +11,13 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
     
     pharmacy_history_ids = fields.One2many('res.patient.pharmacy.history', 'patient_id', string='Pharmacy History')
-    patient_no = fields.Char(string='Patient No', readonly=True)
+    patient_no = fields.Char(string='Patient No', readonly=True,required= True)
     gender = fields.Selection([('Male', 'Male'),('Female', 'Female'),('Other', 'Other')], string='Gender')
-    date_of_registration = fields.Char(string='Registration Date')
-    first_name = fields.Char(string='First Name')
-    middle_name = fields.Char(string='Middle Name')
-    last_name = fields.Char(string='Last Name')
-    date_of_registration = fields.Datetime(string='Registration Date',default= fields.Datetime.now)
+    # date_of_registration = fields.Char(string='Registration Date')
+    first_name = fields.Char(string='First Name', required= True)
+    middle_name = fields.Char(string='Middle Name',required= True)
+    last_name = fields.Char(string='Last Name',required= True)
+    date_of_registration = fields.Datetime(string='Registration Date',default= fields.Datetime.now,required= True)
     dob = fields.Date(string='Date of Birth')
     age = fields.Char(string='Age', compute="compute_dob", store=False)
     name = fields.Char(

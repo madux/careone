@@ -83,7 +83,8 @@
                              <!-- context="{'form_view_ref': }"> -->
                                 <tree>
                                     <field name="name"/>
-                                    <field name="description"/>
+                                    <field name="chief_complaint" readonly="state in ['Completed']" placeholder="Chief complaint..."/>
+                                    <field name="state"/>
                                     <field name="severity"/>
                                     <field name="patient_id"/>
                                     <field name="severity"/>
