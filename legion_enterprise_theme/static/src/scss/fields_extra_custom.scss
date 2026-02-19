@@ -211,7 +211,7 @@ body, .o_web_client {
 .table thead th {
     vertical-align: bottom;
     border-bottom: none;
-    padding-left: 0px;
+    padding-left: 3px;
     font-weight: 600;
     color: #4a5568;
     text-transform: uppercase;
@@ -227,6 +227,7 @@ body, .o_web_client {
     border-image: linear-gradient(90deg, #00A09D, #875A7B, #00A09D) 1;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+ 
 
 .o_list_view thead > tr > th {
     border-left: 0px solid #fff;
@@ -265,6 +266,8 @@ body, .o_web_client {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding-top: 16px !important;
+    padding-left: 16px !important;
 }
 
 // Modern table rows
