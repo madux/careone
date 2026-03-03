@@ -68,6 +68,7 @@ class PatientMedicalEvaluation(models.Model):
             ('Invoiced', 'Invoiced'),
         ]
     name = fields.Char(string='Evaluation No.', readonly=True)
+
     severity = fields.Selection([
         ('mild', 'Mild'),
         ('moderate', 'Moderate'),
@@ -77,9 +78,9 @@ class PatientMedicalEvaluation(models.Model):
         ('inbound', 'Inbound'),
         ('outbound', 'Outbound'),
     ], string='Evaluation type')
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Chief Complaint')
     patient_id = fields.Many2one("res.partner", string="Patient ID")
-    branch_id = fields.Many2one("multi.branch", string="Clinic Branch")
+    branch_id = fields.Many2one("multi.branch", string="Clinic Branch", default = lambda self: self.env.user.branch_id.id)
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
     pharmacy_prescription_line_ids = fields.One2many('res.patient.pharmacy.history', 'patient_evaluation_id', string='Prescriptions')
     age = fields.Char(related="patient_id.age")
@@ -89,14 +90,43 @@ class PatientMedicalEvaluation(models.Model):
     chief_complaint = fields.Char(string='Chief Complaint', help='Chief Complaint')
     notes_complaint = fields.Text(string='Complaint details')
     hpi = fields.Text(string='HPI', help='History of present Illness')
-    state = fields.Selection([('Draft','Draft'), ('Published', 'Published')], default='Draft')
+    state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
+    evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
+    # company = fields.Many2one(
+    #     'res.company', 
+    #     related='patient_id.company', 
+    #     string='Company', 
+    #     store=True,  # optional but recommended
+    #     readonly=True
+    # )
+  
+
+    # def get_default_name(self):
+    #     return self.env["ir.sequence"].next_by_code("patient.medical.evaluation") or "/"
+
+    # @api.model
+    # def create(self, vals):
+    #     # if not vals.get("evaluation_no"):  # Only generate if not provided
+    #     vals["evaluation_no"] = self.get_default_name()
+    #     return super().create(vals)
     
-    
+    @api.model
+    def create(self, vals):
+     if vals.get('evaluation_no', 'New') == 'New':
+        vals['evaluation_no'] = self.env['ir.sequence'].next_by_code(
+            'patient.medical.evaluation') or 'New'
+     return super(PatientMedicalEvaluation, self).create(vals)
+
     def set_to_progress(self):
-        return self.write({'state': 'Completed'})
+        return self.write({'state': 'Published'})
+    def set_to_draft(self):
+        return self.write({'state': 'Draft'})
 
     def set_to_completed(self):
         return self.write({'state': 'Completed'})
+    
+    # def set_to_completed(self):
+    #     return self.write({'state': 'Draft'})
 
     ###### admission workflow ######
     def action_admit(self):
