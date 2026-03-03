@@ -22,10 +22,15 @@ class ResPartner(models.Model):
     age = fields.Char(string='Age', compute="compute_dob", store=False)
     name = fields.Char(
           compute='_compute_full_name', store=True,readonly=False)
+    # company_id = fields.Many2one('res.company', string='Company', )
+    
+    # company = fields.Many2one('res.company', string='Company')
+    
 
     
     related_employee_number = fields.Char(string='Employee No', compute="get_employee_number", store=False)
     is_patient = fields.Boolean(string='Is Patient')
+    is_staff = fields.Boolean(string='Is Staff',compute='_compute_employee_record',store=False)
 
     prescription_count = fields.Integer(compute='_compute_prescription_count')
     # last_visit_date = fields.Datetime(compute='_compute_last_visit_date', store=True)
@@ -34,7 +39,18 @@ class ResPartner(models.Model):
     chronic_condition_ids = fields.Many2many('pharmacy.chronic.condition', string='Chronic Conditions')
     patient_history_ids = fields.One2many('patient.medical.history', 'patient_id', string='Medical History')
     patient_evaluation_ids = fields.One2many('patient.medical.evaluation', 'patient_id', string='Medical Evaluation')
-    evaluation_count=fields.Integer()
+    patient_evaluation_count=fields.Integer(
+         compute='_compute_total_evaluations_count'
+    )
+
+    @api.depends('employee_ids')
+    def _compute_employee_record(self):
+        for user in self:
+            employee = self.env['hr.employee'].search(
+                [('user_id', '=', user.id)],
+                limit=1
+            )
+            user.is_staff = bool(employee)
 
     def get_default_name(self, vals):
         return self.env["ir.sequence"].next_by_code("patient.code") or "/"
@@ -87,6 +103,11 @@ class ResPartner(models.Model):
                 rec.last_visit_date = max(rec.pharmacy_history_ids.mapped('date'))
             else:
                 rec.last_visit_date = False
+
+    @api.depends('patient_evaluation_ids')
+    def _compute_total_evaluations_count(self):
+        for patient in self:
+            patient.patient_evaluation_count = len(patient.patient_evaluation_ids)
 
     def action_view_evaluation(self):
         views = self.env.ref("careone_health.view_patient_medical_evaluation_form").id

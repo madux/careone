@@ -52,6 +52,7 @@
                             <!-- <field name="template_name" invisible="1"/> -->
                             <field name="evaluation_type" readonly="state in ['Completed']" required="1"/>
                             <field name="evaluation_start_date" readonly="state in ['Completed']"/>
+                            <!-- <field name="company"/> -->
                             <!-- <field name="appointment" domain="[('patient', '=', patient)]" options="{'no_create': True}"/> -->
                                   
                         </group>

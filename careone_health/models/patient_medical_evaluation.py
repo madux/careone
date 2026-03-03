@@ -92,6 +92,14 @@ class PatientMedicalEvaluation(models.Model):
     hpi = fields.Text(string='HPI', help='History of present Illness')
     state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
     evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
+    # company = fields.Many2one(
+    #     'res.company', 
+    #     related='patient_id.company', 
+    #     string='Company', 
+    #     store=True,  # optional but recommended
+    #     readonly=True
+    # )
+  
 
     # def get_default_name(self):
     #     return self.env["ir.sequence"].next_by_code("patient.medical.evaluation") or "/"
@@ -117,8 +125,8 @@ class PatientMedicalEvaluation(models.Model):
     def set_to_completed(self):
         return self.write({'state': 'Completed'})
     
-    def set_to_completed(self):
-        return self.write({'state': 'Draft'})
+    # def set_to_completed(self):
+    #     return self.write({'state': 'Draft'})
 
     ###### admission workflow ######
     def action_admit(self):
