@@ -53,8 +53,6 @@
                             <field name="evaluation_type" readonly="state in ['Completed']" required="1"/>
                             <field name="evaluation_start_date" readonly="state in ['Completed']"/>
                             <field name="evaluation_duration" readonly="True"/>
-                            <field name="disease"/>
-                            <field name="recommendation"/>
                             <field name="blood_group"/>
                             <field name="genotype"/>
                             <!-- <field name="appointment" domain="[('patient', '=', patient)]" options="{'no_create': True}"/> -->
@@ -131,6 +129,16 @@
                         <page string="Prescription" name="symptoms">
 
                         </page>
+                         <page string="Disease" name="disease">
+                          <field name="disease"/>
+                           
+
+                        </page>
+                         <page string="Recommendation" name="recommendation">
+                  
+                            <field name="recommendation"/>
+
+                        </page>
 
                         <page string="Dietary" name="dietary">
                             <div class="">
@@ -196,6 +204,9 @@
                             </group>
                         </page>
                         <page string="Family History" name="fm_history">                            <!--page 2-->
+                            <field name="family_history_condition" nolabel="1" invisible="0" />
+                        </page>
+                        <page string="Treatment Plan" name="treatment_plan">                            <!--page 2-->
                             <field name="family_history_condition" nolabel="1" invisible="0" />
                         </page>
 

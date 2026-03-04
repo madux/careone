@@ -98,8 +98,9 @@ class PatientMedicalEvaluation(models.Model):
         store=True,
         readonly=True
     )
-    recommendation = fields.Char(string="Recommendation")
-    disease  = fields.Char(string="Disease ")
+    recommendation = fields.Text(string="Recommendation")
+    disease  = fields.Text(string="Disease ")
+    treatment_plan=fields.Text(string="Treatment_ Plan ")
     blood_group = fields.Selection(
         related='patient_id.blood_group',
         string="Blood Group",
