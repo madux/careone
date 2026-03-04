@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <form string="Evaluation">
                 <header>
-                    <button name="set_to_progress" invisible="state not in ['Draft']" string="Start Evaluation"  confirm="Are you sure you want to start this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
-                    <button name="set_to_completed" invisible="state not in ['Published']" string="Complete Evaluation"  confirm="Are you sure you want to complete this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
-                    <button name="set_to_draft" invisible="state not in ['Published']" string="Reverse Evaluation"  confirm="Are you sure you want to reverse this evaluation?" type="object" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="set_to_progress" invisible="state not in ['Draft']" string="Start Evaluation" confirm="Are you sure you want to start this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="set_to_completed" invisible="state not in ['Published']" string="Complete Evaluation" confirm="Are you sure you want to complete this evaluation?" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system"/>
+                    <button name="set_to_draft" invisible="state not in ['Published']" string="Reverse Evaluation" confirm="Are you sure you want to reverse this evaluation?" type="object" groups="careone_health.group_user_clinician,base.group_system"/>
                     <button name="action_admit" type="object" string="Admit Patient" invisible="state in ['Completed']" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" />
                     <!-- <button name="action_admit" type="object" string="Admit Patient" invisible="state in ['Completed']" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" invisible="admission_state in ['inpatient']"/> -->
                     <button string="Discharge Patient" name="action_discharge" type="object" class="oe_highlight" groups="careone_health.group_user_clinician,base.group_system" invisible="admission_state in ['outpatient','draft']" />
@@ -17,8 +17,8 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        
-                         <h1>
+
+                        <h1>
                             <label class="oe_edit_only" for="evaluation_no"/>
                             <!-- <label class="oe_edit_only" for="name" string="Evaluation #"/> -->
                             <!-- <field name="name" class="oe_inline"/> -->
@@ -30,7 +30,7 @@
                     <!-- <div class="evaluation_header"> -->
                     <group name="outer">
                         <group name="left_side">
-                            
+
                             <field name="admission_state" invisible="1" />
                             <field name="admission_id" invisible="1"/>
                             <!--This field is important for the admission workflow-->
@@ -39,7 +39,7 @@
                             <!-- <field name="patient_id"/> -->
                             <field name="patient_id" required="1"/>
                             <!-- <field name="nurse" required="1" options="{'no_create': True}" readonly="state in ['Completed']"/> -->
-                            <field name="severity" required="1"/> 
+                            <field name="severity" required="1"/>
                             <field name="care_provider" options="{'no_create': True}" invisible="patient_id == False" readonly="state == 'Completed'"/>
 
                             <!-- <field name="property_product_pricelist" /> -->
@@ -48,21 +48,23 @@
                         <group name="right_side">
                             <!-- <field name="doctor" invisible="1" required="0" options="{'no_create': True}" readonly="state in ['Completed']"/> -->
                             <!-- <field name="edit_option" string="Edit"/> -->
-                            
+
                             <!-- <field name="template_name" invisible="1"/> -->
                             <field name="evaluation_type" readonly="state in ['Completed']" required="1"/>
                             <field name="evaluation_start_date" readonly="state in ['Completed']"/>
-                            <!-- <field name="company"/> -->
+                            <field name="evaluation_duration" readonly="True"/>
+                            <field name="blood_group"/>
+                            <field name="genotype"/>
                             <!-- <field name="appointment" domain="[('patient', '=', patient)]" options="{'no_create': True}"/> -->
-                                  
+
                         </group>
                         <group colspan="4">
                             <field name="age"/>
-                            <field name="sex"/> 
-                            <field name="evaluation_end_date" invisible="True"/>
+                            <field name="sex"/>
+                            <field name="evaluation_end_date"/>
                             <field name="notes_complaint" nolabel="1" invisible="1" />
 
-                              
+
                         </group>
                         <group colspan="4">
                             <field name="chief_complaint" readonly="state in ['Completed']" placeholder="Chief complaint..." required="1"/>
@@ -75,8 +77,8 @@
                     <!-- </div>                //evaluation_header -->
 
                     <notebook class="dolphin">
-                        
-                        <page string="Vital Signs" name="vital_signs">                    <!--page 2-->
+
+                        <page string="Vital Signs" name="vital_signs">                            <!--page 2-->
                             <div class="">
                                 <div class="o_horizontal_separator">Vital Signs</div>
                                 <field name="vitalsigns" readonly="0">
@@ -122,7 +124,20 @@
                                 <field name="vital_signs_anthropometry_notes"/>
                             </group>
                         </page>
-                        <page string="Symptoms" name="symptoms"> 
+                        <page string="Symptoms" name="symptoms">
+                        </page>
+                        <page string="Prescription" name="symptoms">
+
+                        </page>
+                         <page string="Disease" name="disease">
+                          <field name="disease"/>
+                           
+
+                        </page>
+                         <page string="Recommendation" name="recommendation">
+                  
+                            <field name="recommendation"/>
+
                         </page>
 
                         <page string="Dietary" name="dietary">
@@ -135,7 +150,7 @@
                                 </group>
                             </div>
                         </page>
-                        <page string="Other Vitals" name="other_vital_signs">                    <!--page 2-->
+                        <page string="Other Vitals" name="other_vital_signs">                            <!--page 2-->
                             <group>
                                 <group>
                                     <field name="vision"/>
@@ -162,7 +177,7 @@
                                     <field name="breath_sounds"/>
                                     <field name="pain"/>
                                     <field name="pain_score"/>
-                                    
+
                                 </group>
 
                                 <group>
@@ -176,7 +191,7 @@
                                     <field name="conditions_affecting_ecs"/>
                                 </group>
                                 <group>
-                                     <field name="gastrointestinal_bleeding"/>
+                                    <field name="gastrointestinal_bleeding"/>
                                     <field name="gastrointestinal_diarrhea"/>
                                     <field name="gastrointestinal_constipation"/>
                                     <field name="gastrointestinal_vomiting"/>
@@ -188,7 +203,10 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Family History" name="fm_history">                    <!--page 2-->
+                        <page string="Family History" name="fm_history">                            <!--page 2-->
+                            <field name="family_history_condition" nolabel="1" invisible="0" />
+                        </page>
+                        <page string="Treatment Plan" name="treatment_plan">                            <!--page 2-->
                             <field name="family_history_condition" nolabel="1" invisible="0" />
                         </page>
 

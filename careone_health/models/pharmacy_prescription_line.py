@@ -47,6 +47,11 @@ class PharmacyPrescriptionLine(models.Model):
     price_subtotal = fields.Float(string='Subtotal', compute='_compute_price_subtotal', store=True)
     notes = fields.Text(string='Notes')
     
+    prescription_type=fields.Selection([
+        ('inbound', 'Inbound'),
+        ('outbound', 'Outbound'),
+    ], string='Prescription Type')
+    
     @api.depends('start_date', 'frequency_duration', 'frequency')
     def _compute_expected_next_visit(self):
         for rec in self:
