@@ -21,7 +21,6 @@ class ResPatientPharmacyHistory(models.Model):
                                domain="[('branch_ids', 'in', branch_id)]", default = _default_stage)
     
     
-         
     
     patient_evaluation_id = fields.Many2one('patient.medical.evaluation', string='Evaluation ID', required=True)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'history_id', string='Prescription Lines')
@@ -45,6 +44,10 @@ class ResPatientPharmacyHistory(models.Model):
     dispensed_by = fields.Many2one('res.users', string='Dispensed By')
     dispensed_date = fields.Datetime(string='Dispensed Date')
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
+    prescription_type=fields.Selection([
+        ('inbound', 'Inbound'),
+        ('outbound', 'Outbound'),
+    ], string='Prescription Type')
 
     priority = fields.Selection([
         ('0', 'Normal'),

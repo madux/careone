@@ -92,6 +92,26 @@ class PatientMedicalEvaluation(models.Model):
     hpi = fields.Text(string='HPI', help='History of present Illness')
     state = fields.Selection([('Draft','Draft'), ('Published', 'In progress'), ('Completed', 'Completed')], default='Draft')
     evaluation_no = fields.Char(string="Evaluation No.", readonly=True, copy=False)
+    evaluation_duration = fields.Char(
+        string="Duration",
+        compute="_compute_duration",
+        store=True,
+        readonly=True
+    )
+    recommendation = fields.Char(string="Recommendation")
+    disease  = fields.Char(string="Disease ")
+    blood_group = fields.Selection(
+        related='patient_id.blood_group',
+        string="Blood Group",
+        readonly=True,
+        store=False  # True if you need to search/filter by it
+    )
+    genotype = fields.Selection(
+        related='patient_id.genotype',
+        string="Genotype",
+        readonly=True,
+        store=False
+    )
     # company = fields.Many2one(
     #     'res.company', 
     #     related='patient_id.company', 
@@ -99,7 +119,20 @@ class PatientMedicalEvaluation(models.Model):
     #     store=True,  # optional but recommended
     #     readonly=True
     # )
-  
+
+    @api.depends('evaluation_start_date', 'evaluation_end_date')
+    def _compute_duration(self):
+        for record in self:
+            if record.evaluation_start_date and record.evaluation_end_date and record.evaluation_end_date >= record.evaluation_start_date:
+                delta = record.evaluation_end_date - record.evaluation_start_date
+                total_seconds = int(delta.total_seconds())
+
+                total_hours = total_seconds // 3600
+                minutes = (total_seconds % 3600) // 60
+
+                record.evaluation_duration = f"{total_hours} Hours {minutes} Minutes"
+            else:
+                record.evaluation_duration = "0 Hours 0 Minutes"
 
     # def get_default_name(self):
     #     return self.env["ir.sequence"].next_by_code("patient.medical.evaluation") or "/"
