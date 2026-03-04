@@ -10,7 +10,7 @@ class VitalSigns(models.Model):
     temp = fields.Float(string="Temp")
     systolic = fields.Integer(string="Systolic")
     diastolic = fields.Integer(string="Diastolic")
-    heart_rate = fields.Integer(string="Heart Rate")
+    heart_rate = fields.Integer(string="Pulse Rate")
     respiratory = fields.Integer(string="Respiratory")
     oxy_saturate = fields.Integer(string="Oxygen Saturation")
     evaluation_id = fields.Many2one('patient.medical.evaluation', string="Evaluation", ondelete='cascade')

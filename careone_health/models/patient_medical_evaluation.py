@@ -242,7 +242,7 @@ class PatientMedicalEvaluation(models.Model):
     tag = fields.Integer(string='Last TAGs', help="Triacylglycerols (triglicerides) level. It can be approximative")
     systolic = fields.Integer(string='Systolic Pressure')
     diastolic = fields.Integer(string='Diastolic Pressure')
-    bpm = fields.Integer(string='Heart Rate', help="Heart rate expressed in beats per minute")
+    bpm = fields.Integer(string='Pulse Rate', help="Pulse rate expressed in beats per minute")
     respiratory_rate = fields.Integer(string='Respiratory Rate', help="Respiratory rate expressed in breaths per minute")
     osat = fields.Integer(string='Oxygen Saturation', help="Oxygen Saturation (arterial).")
     malnutrition = fields.Boolean(string='Malnutrition', help="Check this box if the patient show signs of malnutrition. If not associated to a disease, please encode the correspondent disease on the patient disease history. For example, Moderate protein-energy malnutrition, E44.0 in ICD-10 encoding")
