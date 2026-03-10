@@ -48,7 +48,7 @@ class ResPartner(models.Model):
     is_patient = fields.Boolean(string='Is Patient')
     is_staff = fields.Boolean(string='Is Staff', store=False)
     # required if is_staff
-    related_employee_number = fields.Char(string='Patient Id', store=True)
+    related_employee_number = fields.Char(string='Staf ID', store=True)
 
     # staff_id=fields.Char(string='Staff Number(Staff Only)')
 
