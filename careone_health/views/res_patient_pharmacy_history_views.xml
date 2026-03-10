@@ -47,7 +47,7 @@
                         <group>
                             <field name="patient_id" options="{'no_create': True}" domain="[('is_patient', '=', True)]"/>
                             <field name="branch_id" options="{'no_create': True}"/>
-                            <field name="date"/> 
+                            <field name="date"/>
                             <field name="state"/>
                             <field name="stage_id" options="{'no_create': True}"/>
                             <field name="priority" widget="priority"/>
@@ -60,7 +60,8 @@
                             <field name="dispensed_by" readonly="1"/>
                             <field name="dispensed_date" readonly="1"/>
                             <field name="prescription_document" readonly="0"/>
-                            
+                            <field name="prescription_type" readonly="0"/>
+
                         </group>
                     </group>
                     <group>
@@ -159,7 +160,9 @@
                             <div class="oe_kanban_content">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
                                     </div>
                                     <span class="float-right">
                                         <field name="priority" widget="priority"/>
@@ -222,18 +225,9 @@
         <field name="context">{'search_default_draft': 1}</field>
     </record>
 
-    <menuitem id="menu_pharmacy_root"
-              name="EMR"
-              sequence="50"/>
+    <menuitem id="menu_pharmacy_root" name="EMR" sequence="50"/>
 
-    <menuitem id="menu_pharmacy_prescriptions"
-              name="Prescriptions"
-              parent="menu_pharmacy_root"
-              action="action_res_patient_pharmacy_history"
-              sequence="10"/>
+    <menuitem id="menu_pharmacy_prescriptions" name="Prescriptions" parent="menu_pharmacy_root" action="action_res_patient_pharmacy_history" sequence="10"/>
 
-    <menuitem id="menu_pharmacy_config"
-              name="Configuration"
-              parent="menu_pharmacy_root"
-              sequence="100"/>
+    <menuitem id="menu_pharmacy_config" name="Configuration" parent="menu_pharmacy_root" sequence="100"/>
 </odoo>
