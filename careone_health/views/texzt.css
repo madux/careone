@@ -256,6 +256,8 @@ $o-brand-odoo: #e83e8c;
     transform: translateY(-3px);
 }
 
+o-dropdown dropdown o-dropdown--no-caret
+
 
 .o-dropdown.dropdown.o-dropdown--no-caret {
     background-color: #e83e8c !important;
