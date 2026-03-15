@@ -41,6 +41,7 @@ class ResPatientPharmacyHistory(models.Model):
     pharmacist_id = fields.Many2one('res.users', string='Pharmacist', default=lambda self: self.env.user)
     verified_by = fields.Many2one('res.users', string='Verified By')
     verified_date = fields.Datetime(string='Verified Date')
+
     dispensed_by = fields.Many2one('res.users', string='Dispensed By')
     dispensed_date = fields.Datetime(string='Dispensed Date')
     prescription_document = fields.Many2one("ir.attachment", string="Prescription Document")
@@ -139,7 +140,7 @@ class ResPatientPharmacyHistory(models.Model):
             })
         
         self.sale_order_id = sale_order
-        self.is_pharmacy_sale = True 
+        self.sale_order_id.is_pharmacy_sale = True 
         return sale_order
     
     def action_view_sale_order(self):

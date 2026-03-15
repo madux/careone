@@ -46,6 +46,7 @@
                     <group>
                         <group>
                             <field name="patient_id" options="{'no_create': True}" domain="[('is_patient', '=', True)]"/>
+                            <field name="patient_evaluation_id" required="0" options="{'no_create': True}"/>
                             <field name="branch_id" options="{'no_create': True}"/>
                             <field name="date"/>
                             <field name="state"/>
